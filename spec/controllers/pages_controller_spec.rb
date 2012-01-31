@@ -7,7 +7,7 @@ describe PagesController do
     #
     # Define @base_title ere.
     #
-    @base_title = "Ruby on Rails Tutorial Sample App"
+    @base_title = "Shitty Twitter"
   end
 
   describe "GET 'home'" do
