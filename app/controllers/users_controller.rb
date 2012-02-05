@@ -15,22 +15,30 @@ class UsersController < ApplicationController
   end
   
   def new
-    @title= "Sign up"
-    @user = User.new
+    if signed_in?
+      redirect_to root_path
+    else
+      @title= "Sign up"
+      @user = User.new
+    end
   end
   
   def create
-    @user = User.new(params[:user])
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to Shitty Twitter"
-      redirect_to @user
-    else
-      @title = "Sign up"
-      @user.password = nil
-      @user.password_confirmation = nil
-      render 'new'
-    end
+      if signed_in?
+        redirect_to root_path
+      else  
+        @user = User.new(params[:user])
+        if @user.save
+          sign_in @user
+          flash[:success] = "Welcome to Shitty Twitter"
+          redirect_to @user
+        else
+          @title = "Sign up"
+          @user.password = nil
+          @user.password_confirmation = nil
+          render 'new'      
+        end
+      end
   end
 
   def edit
@@ -49,9 +57,14 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed"
-    redirect_to users_path
+      if User.find(params[:id]) == current_user
+        flash[:error] = "You cannot delete yourself!"
+        redirect_to users_path
+      else
+        User.find(params[:id]).destroy
+        flash[:success] = "User destroyed"
+        redirect_to users_path
+    end  
   end
 
 

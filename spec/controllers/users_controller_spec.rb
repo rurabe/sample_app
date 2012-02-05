@@ -1,20 +1,4 @@
 require 'spec_helper'
-require 'database_cleaner'
-
-RSpec.configure do |config|
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :truncation
-    DatabaseCleaner.clean_with(:truncation)
-  end
-  
-  config.before(:each) do
-      DatabaseCleaner.start
-  end
-
-  config.after(:each) do
-      DatabaseCleaner.clean
-  end
-end
 
 describe UsersController do
   render_views
@@ -311,12 +295,17 @@ describe UsersController do
         delete :destroy, :id => @user
         response.should redirect_to(root_path)
       end
+      
+      it "should not have delete links" do
+        get 'index'
+        response.should_not have_selector("a", :'data-method' => "delete")
+      end
     end
     
     describe "as an admin user" do
       
       before(:each) do
-        admin = Factory(:user, :email => "admin@gmail.com", :admin => true)
+        admin = Factory(:user, :email => "admin@example.com", :admin => true)
         test_sign_in(admin)
       end
       
@@ -329,6 +318,18 @@ describe UsersController do
       it "should redirect to the users page" do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
+      end
+      
+      it "should have delete links" do
+        get 'index'
+        response.should have_selector("a", :'data-method' => "delete")
+      end
+      
+      it "should not be able to destroy itself" do
+        @admin = User.find_by_email("admin@example.com")
+        lambda do
+          delete :destroy, :id => @admin
+        end.should_not change(User, :count)
       end
     end
   end  
