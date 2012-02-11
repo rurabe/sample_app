@@ -1,10 +1,11 @@
 class PagesController < ApplicationController
   def home
-    if signed_in?
-      redirect_to current_user
-    else
       @title = "Home"
-    end
+      if signed_in?
+        @micropost = Micropost.new 
+        @feed_items = current_user.feed.paginate(:page => params[:page])
+      end
+      
   end
 
   def contact
