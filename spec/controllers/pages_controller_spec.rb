@@ -7,7 +7,7 @@ describe PagesController do
     #
     # Define @base_title ere.
     #
-    @base_title = "Shitty Twitter"
+    @base_title = "ryantweet"
   end
 
   describe "GET 'home'" do
