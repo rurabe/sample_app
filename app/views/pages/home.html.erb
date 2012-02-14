@@ -2,7 +2,7 @@
 	<table class="front" summary="For signed-in users">
 		<tr>
 			<td class="main">
-				<h1 class="micropost">What's up?</h1>
+				<h1 class="micropost">Hoo, what's up?</h1>
 				<%= render 'shared/micropost_form' %>
 				<%= render 'shared/feed' %>
 			</td>
@@ -13,11 +13,9 @@
 		</tr>
 	</table>
 <% else %>
-    <h1>Sample App</h1>
+    <h1>Ryan's App</h1>
     <p>
-      This is the home page for the
-      <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
-      sample application.
+      Welcome! This is the app I wrote to start learning <a href="http://en.wikipedia.org/wiki/Ruby_on_Rails" target="_blank">Ruby on Rails</a>. It's fully functional, so go ahead and <%= link_to "sign up!", signup_path %> If this isn't your first time, go ahead and <%=link_to "sign in.", signin_path%>
     </p>
 
 	<%= link_to "Sign up now!", signup_path , :class => "signup_button round" %>
